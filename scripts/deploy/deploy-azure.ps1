@@ -48,11 +48,12 @@ param(
 
     [string]
     # Region to which to make the deployment
-    $Region = "southcentralus",
+    $Region = "eastus2",
+    #"southcentralus",
 
     [string]
     # SKU for the Azure App Service plan
-    $WebAppServiceSku = "B1",
+    $WebAppServiceSku = "S1",
 
     [string]
     # Azure AD cloud instance for authenticating users
