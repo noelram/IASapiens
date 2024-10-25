@@ -1,0 +1,43 @@
+name: Build and Run Backend
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-run-backend:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Stop existing backend process
+      run: |
+        Stop-Process -Name "CopilotChatWebApi" -ErrorAction SilentlyContinue
+      shell: pwsh
+
+    - name: Get defaults and constants
+      run: |
+        $varScriptFilePath = Join-Path "${{ github.workspace }}" 'scripts/Variables.ps1'
+        . $varScriptFilePath
+      shell: pwsh
+
+    - name: Set environment variable
+      run: |
+        $Env:ASPNETCORE_ENVIRONMENT=$varASPNetCore
+      shell: pwsh
+
+    - name: Build and run backend
+      run: |
+        cd webapi
+        dotnet build
+        dotnet run
+      shell: pwsh
